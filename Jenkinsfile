@@ -9,9 +9,9 @@ pipeline {
                 sh '''
                     git config user.name "PandeeswariSubbaiya"
                     git config user.email "PandeeswariSubbaiya1814@gmail.com"
-                    git checkout dev
-                    git merge --no-ff main
-                    git push origin dev
+                    git checkout main
+                    git merge --no-ff dev
+                    git push origin main
                 '''
                 
                 // Create a new pull request
