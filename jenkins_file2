@@ -9,7 +9,7 @@ pipeline {
             }
              stage('Create target branch') {
                 steps {
-                    sh 'git checkout -b main'
+                    sh 'git checkout main'
                 }
              }
              stage('Merge changes') {
