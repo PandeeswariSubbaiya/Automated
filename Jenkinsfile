@@ -11,7 +11,6 @@ pipeline {
                     git config user.email "PandeeswariSubbaiya1814@gmail.com"
                     git checkout main
                     git merge --no-ff dev
-                    git push origin main
                 '''
                 
                 // Create a new pull request
