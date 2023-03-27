@@ -9,9 +9,9 @@ pipeline {
                 sh '''
                     git config user.name "PandeeswariSubbaiya"
                     git config user.email "PandeeswariSubbaiya1814@gmail.com"
-                    git checkout release
+                    git checkout dev
                     git merge --no-ff main
-                    git push origin release
+                    git push origin dev
                 '''
                 
                 // Create a new pull request
@@ -21,7 +21,7 @@ pipeline {
                     --header 'Content-Type: application/json' \
                     --data-raw '{
                         "title": "Pull request",
-                        "head": "release",
+                        "head": "dev",
                         "base": "main"
                     }'
                 '''
