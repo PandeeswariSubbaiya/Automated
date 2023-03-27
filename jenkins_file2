@@ -12,11 +12,6 @@ pipeline {
                     sh 'git merge dev'
                 }
              }
-             stage('Push changes to target branch') {
-                steps {
-                    sh 'git push origin main'
-                }
-             }
              stage('Create pull request') {
                 steps {
                     script {
