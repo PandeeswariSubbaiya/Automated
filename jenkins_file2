@@ -1,14 +1,14 @@
 pipeline {
     agent any
     stages {
-        stage('Clone and checkout source branch') {
+        stage('checkout source branch') {
                 steps {
-                    sh 'git clone https://github.com/PandeeswariSubbaiya/Automated.git'
-                    sh 'git checkout dev'
+                    checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/PandeeswariSubbaiya/Automated.git', credentialsId: 'Jenkins_Github']]])
                 }
             }
              stage('Merge changes') {
                 steps {
+                    sh 'git checkout main'
                     sh 'git merge dev'
                 }
              }
