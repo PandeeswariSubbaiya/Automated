@@ -12,14 +12,12 @@ pipeline {
                     sh 'git merge dev'
                 }
              }
-             stage('Create pull request') {
-                steps {
-                    script {
-                        def response = sh(
-                            script: 'curl -d \'{ "title": "Merge changes from dev to main", "head": "main", "base": "dev" }\' -H "Authorization: token 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" -H "Content-Type: application/json" https://api.github.com/repos/PandeeswariSubbaiya/Automated/pulls',
-                            returnStdout: true
-                        )
-                        println response
+        stage('Create pull request') {
+            steps {
+                withCredentials([string(credentialsId: 'Jenkins_Github', variable: 'Jenkins_Github')]) {
+                    sh '''
+                        curl -d '{"title": "Merge changes from dev to main", "head": "dev", "base": "main"}' -H "Authorization: token $Jenkins_Github" -H "Content-Type: application/json" https://api.github.com/repos/PandeeswariSubbaiya/Automated/pulls
+                    '''
                     }
                 }
             }
