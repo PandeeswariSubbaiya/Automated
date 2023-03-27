@@ -14,7 +14,7 @@ pipeline {
              }
         stage('Create pull request') {
             steps {
-                withCredentials([string(credentialsId: 'GITHUB_TOKEN', variable: 'GITHUB_TOKEN')]) {
+                withCredentials([sshUserPrivateKey(credentialsId: 'git-credentials', keyFileVariable: 'Jenkins_Github')]) {
                     sh '''
                         curl -d '{"title": "Merge changes from dev to main", "head": "main", "base": "dev"}' -H "Authorization: token $Jenkins_Github" -H "Content-Type: application/json" https://api.github.com/repos/PandeeswariSubbaiya/Automated/pulls
                     '''
