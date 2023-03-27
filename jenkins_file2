@@ -16,7 +16,7 @@ pipeline {
                 steps {
                     script {
                         def response = sh(
-                            script: 'curl -d \'{ "title": "Merge changes from dev to main", "head": "main", "base": "dev" }\' -H "Authorization: token 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" -H "Content-Type: application/json" https://api.github.com/repos/PandeeswariSubbaiya/Automated/pulls',
+                            script: 'curl -d \'{ "title": "Merge changes from dev to main", "head": "main", "base": "dev" }\' -H "Authorization: token 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" -H "Content-Type: application/json" https://api.github.com/repos/PandeeswariSubbaiya/Automated/pulls',
                             returnStdout: true
                         )
                         println response
