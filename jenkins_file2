@@ -1,28 +1,37 @@
-stage('Clone and checkout source branch') {
-    steps {
-        sh 'git clone https://github.com/PandeeswariSubbaiya/Automated.git'
-        sh 'git checkout dev'
-    }
- stage('Create target branch') {
-    steps {
-        sh 'git checkout -b main'
-    }
- stage('Merge changes') {
-    steps {
-        sh 'git merge dev'
-    }
- stage('Push changes to target branch') {
-    steps {
-        sh 'git push origin main'
-    }
- stage('Create pull request') {
-    steps {
-        script {
-            def response = sh(
-                script: 'curl -d \'{ "title": "Merge changes from dev to main", "head": "main", "base": "dev" }\' -H "Authorization: token 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" -H "Content-Type: application/json" https://api.github.com/repos/PandeeswariSubbaiya/Automated/pulls',
-                returnStdout: true
-            )
-            println response
+pipeline {
+    agent any
+    stages {
+        stage('Clone and checkout source branch') {
+                steps {
+                    sh 'git clone https://github.com/PandeeswariSubbaiya/Automated.git'
+                    sh 'git checkout dev'
+                }
+            }
+             stage('Create target branch') {
+                steps {
+                    sh 'git checkout -b main'
+                }
+             }
+             stage('Merge changes') {
+                steps {
+                    sh 'git merge dev'
+                }
+             }
+             stage('Push changes to target branch') {
+                steps {
+                    sh 'git push origin main'
+                }
+             }
+             stage('Create pull request') {
+                steps {
+                    script {
+                        def response = sh(
+                            script: 'curl -d \'{ "title": "Merge changes from dev to main", "head": "main", "base": "dev" }\' -H "Authorization: token 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" -H "Content-Type: application/json" https://api.github.com/repos/PandeeswariSubbaiya/Automated/pulls',
+                            returnStdout: true
+                        )
+                        println response
+                    }
+                }
+            }
         }
     }
-}
