@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+    tools { 
+        maven 'maven3' 
+           }
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout([$class: 'GitSCM',
+                          branches: [[name: 'dev']],
+                          doGenerateSubmoduleConfigurations: false,
+                          extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'main']],
+                          submoduleCfg: [],
+                          userRemoteConfigs: [[credentialsId: 'my-github-credentials', url: 'https://github.com/PandeeswariSubbaiya/Automated.git']]])
+            }
+        }
+        stage('Build and Test') {
+            steps {
+                sh 'mvn clean test package'
+            }
+        }
+        stage('Merge and Pull Request') {
+              steps {
+                withCredentials([usernamePassword(credentialsId: 'git-cred-token', usernameVariable: 'GITHUB_USER', passwordVariable: 'GITHUB_TOKEN')]) {
+                  sh """
+                    git config --global user.email "pandeeswari318@gmail.com"
+                    git config --global user.name "pandeeswari"
+                    git checkout -B main
+                    git pull --rebase origin main
+                    git merge --no-ff origin/dev -m "Merge dev into main"
+                   # //curl -X POST -H "Authorization: token ${GITHUB_TOKEN}" -H "Accept: application/vnd.github.v3+json" -d '{"title": "auto pull request", "head": "dev", "base": "main"}' https://api.github.com/repos/owner/repo/pulls
+                   # //curl -X PUT -H "Authorization: token ${GITHUB_TOKEN}" -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/owner/repo/pulls/1/merge
+                    
+                    curl -X POST -H "Authorization: token $GITHUB_TOKEN" -H "Accept: application/vnd.github.v3+json" -d '{"title": "Merge dev into main", "head": "dev", "base": "main"}' https://api.github.com/repos/owner/repo/pulls
+                  """
+                }
+              }
+            }
+    }
+}
